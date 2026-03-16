@@ -1,16 +1,23 @@
+````markdown
 # EngineNext
 
 EngineNext is a lightweight, code-first game engine designed for **clarity, speed, and control**.
 
 Instead of hiding systems behind complex editors or frameworks, EngineNext exposes a **minimal but powerful API** that lets you build games quickly while maintaining full control.
 
-Core design principles:
+---
+
+## Core Design Principles
 
 - **Code first**
 - **Minimal boilerplate**
 - **Fast iteration**
 - **Composable systems**
 - **Clear architecture**
+
+---
+
+## Example
 
 A complete game loop can be written in only a few lines.
 
@@ -80,36 +87,27 @@ All systems are **fully accessible through code**.
 | Advanced Patterns   | Best practices            |
 | Full Example Game   | Complete working example  |
 
-````
-
 ---
 
-# Getting-Started.md
-
-```markdown
 # Getting Started
 
 This guide walks through creating your first EngineNext project.
 
 ---
 
-# 1 Install
+## 1. Install
 
 Add EngineNext to your project.
 
-Example:
-
-````
-
+```bash
 dotnet add package EngineNext
-
-````
+```
 
 Or reference the project directly.
 
 ---
 
-# 2 Create a Scene
+## 2. Create a Scene
 
 Scenes control the game world.
 
@@ -126,11 +124,11 @@ class MyScene : Scene
         // game logic
     }
 }
-````
+```
 
 ---
 
-# 3 Start the Engine
+## 3. Start the Engine
 
 ```csharp
 Engine.Start(new MyScene());
@@ -140,7 +138,7 @@ The engine will now run your scene.
 
 ---
 
-# 4 Game Loop
+## 4. Game Loop
 
 The engine internally performs:
 
@@ -157,7 +155,7 @@ You only implement what you need.
 
 ---
 
-# 5 Spawning Actors
+## 5. Spawning Actors
 
 Actors represent objects in the world.
 
@@ -171,19 +169,13 @@ Actors automatically:
 * Render
 * Interact with physics
 
-````
-
 ---
 
-# Engine-Architecture.md
-
-```markdown
 # Engine Architecture
 
 EngineNext is structured around a **small set of core systems**.
 
-````
-
+```
 Engine
 ├ Scene
 │   ├ Actors
@@ -196,12 +188,11 @@ Engine
 ├ UI
 ├ Sound
 └ Time
-
-````
+```
 
 ---
 
-# Engine Core
+## Engine Core
 
 The engine provides global services.
 
@@ -212,13 +203,13 @@ Engine.Time
 Engine.Actions
 Engine.Input
 Engine.Sound
-````
+```
 
 These services are accessible from anywhere.
 
 ---
 
-# Scene Lifecycle
+## Scene Lifecycle
 
 ```
 Start Scene
@@ -234,7 +225,7 @@ OnEnd()
 
 ---
 
-# Why This Design?
+## Why This Design?
 
 EngineNext avoids hidden systems and magic.
 
@@ -244,27 +235,22 @@ Everything is:
 * debuggable
 * explicit
 
-````
-
 ---
 
-# Scenes.md
-
-```markdown
 # Scenes
 
 Scenes define the game world.
 
 They manage:
 
-- actors
-- physics
-- particles
-- camera
+* actors
+* physics
+* particles
+* camera
 
 ---
 
-# Basic Scene
+## Basic Scene
 
 ```csharp
 class GameScene : Scene
@@ -278,11 +264,11 @@ class GameScene : Scene
     {
     }
 }
-````
+```
 
 ---
 
-# Camera
+## Camera
 
 Scenes control the camera.
 
@@ -298,7 +284,7 @@ CameraSmoothing = 10f;
 
 ---
 
-# Rendering Hooks
+## Rendering Hooks
 
 ```csharp
 public override void OnRenderBackground(RenderList list, SizeI viewport)
@@ -312,27 +298,22 @@ public override void OnRender(RenderList list, SizeI viewport)
 
 These allow full control over rendering order.
 
-````
-
 ---
 
-# Actors.md
-
-```markdown
 # Actors
 
 Actors are the core gameplay objects.
 
 Examples:
 
-- player
-- enemies
-- projectiles
-- world objects
+* player
+* enemies
+* projectiles
+* world objects
 
 ---
 
-# Creating an Actor
+## Creating an Actor
 
 ```csharp
 class Player : Actor
@@ -345,11 +326,11 @@ class Player : Actor
     {
     }
 }
-````
+```
 
 ---
 
-# Transform
+## Transform
 
 Actors include transform data.
 
@@ -362,7 +343,7 @@ Velocity
 
 ---
 
-# Spawning Actors
+## Spawning Actors
 
 Actors are spawned through scenes.
 
@@ -372,7 +353,7 @@ Spawn<Player>();
 
 ---
 
-# Prefabs
+## Prefabs
 
 Prefabs allow reusable configurations.
 
@@ -382,7 +363,7 @@ Spawn(playerPrefab);
 
 ---
 
-# Actor Update Order
+## Actor Update Order
 
 Actors automatically update each frame.
 
@@ -393,13 +374,8 @@ Physics
 Rendering
 ```
 
-````
-
 ---
 
-# Rendering.md
-
-```markdown
 # Rendering
 
 Rendering is performed through the `RenderList`.
@@ -408,19 +384,15 @@ This allows batching and efficient drawing.
 
 ---
 
-# Drawing Primitives
-
-Example:
+## Drawing Primitives
 
 ```csharp
 list.DrawRect(position, size, color);
-````
+```
 
 ---
 
-# Custom Rendering
-
-Actors can draw custom visuals.
+## Custom Rendering
 
 ```csharp
 public override void OnRender(RenderList list)
@@ -431,21 +403,14 @@ public override void OnRender(RenderList list)
 
 ---
 
-# Render Settings
-
-Engine settings can be modified:
+## Render Settings
 
 ```csharp
 Engine.RenderSettings.VSync = true;
 ```
 
-````
-
 ---
 
-# Input.md
-
-```markdown
 # Input
 
 EngineNext uses an **action mapping system**.
@@ -454,16 +419,16 @@ This decouples input from gameplay.
 
 ---
 
-# Defining Actions
+## Defining Actions
 
 ```csharp
 Engine.Actions.Bind("Jump", Key.Space);
 Engine.Actions.Bind("Shoot", Mouse.Left);
-````
+```
 
 ---
 
-# Reading Input
+## Reading Input
 
 ```csharp
 if (Engine.Actions.Pressed("Jump"))
@@ -474,7 +439,7 @@ if (Engine.Actions.Pressed("Jump"))
 
 ---
 
-# Input Modes
+## Input Modes
 
 ```
 GameOnly
@@ -488,69 +453,47 @@ Example:
 Engine.InputMode = InputMode.GameOnly;
 ```
 
-````
-
 ---
 
-# Physics.md
-
-```markdown
 # Physics
 
 Each scene includes a physics world.
 
-````
-
+```
 Scene.Physics
-
-````
+```
 
 ---
 
-# Physics Bodies
+## Physics Bodies
 
 Actors can attach physics bodies.
 
-Example:
-
 ```csharp
 var body = Physics.CreateBody();
-````
+```
 
 ---
 
-# Collision
-
-Physics supports collision detection and response.
-
-Example:
+## Collision
 
 ```csharp
 Physics.Raycast(origin, direction);
 ```
 
-````
-
 ---
 
-# Particles.md
-
-```markdown
 # Particles
 
 Scenes contain a particle system.
 
-````
-
+```
 Scene.Particles
-
-````
+```
 
 ---
 
-# Spawning Particles
-
-Example:
+## Spawning Particles
 
 ```csharp
 Particles.Emit(
@@ -558,7 +501,7 @@ Particles.Emit(
     velocity,
     lifetime
 );
-````
+```
 
 Particles are ideal for:
 
@@ -567,43 +510,30 @@ Particles are ideal for:
 * sparks
 * magic
 
-````
-
 ---
 
-# UI-System.md
-
-```markdown
 # UI System
 
 EngineNext includes a lightweight UI framework.
 
-Access:
-
-````
-
+```
 Engine.UI
-
-````
+```
 
 ---
 
-# Creating UI
-
-Example:
+## Creating UI
 
 ```csharp
 UI.Button("Play", () =>
 {
     StartGame();
 });
-````
+```
 
 ---
 
-# Binding
-
-UI elements can bind directly to values.
+## Binding
 
 ```csharp
 UI.Slider("Volume", ref volume, 0, 1);
@@ -611,7 +541,7 @@ UI.Slider("Volume", ref volume, 0, 1);
 
 ---
 
-# Advantages
+## Advantages
 
 The UI system is:
 
@@ -619,75 +549,55 @@ The UI system is:
 * reactive
 * minimal
 
-````
-
 ---
 
-# Sound.md
-
-```markdown
 # Sound
 
 EngineNext includes a sound system.
 
-Access:
-
-````
-
+```
 Engine.Sound
-
-````
+```
 
 ---
 
-# Playing Sounds
+## Playing Sounds
 
 ```csharp
 Engine.Sound.Play("laser");
-````
+```
 
 ---
 
-# Looping
+## Looping
 
 ```csharp
 Engine.Sound.Loop("music");
 ```
 
-````
-
 ---
 
-# Time.md
-
-```markdown
 # Time
 
 EngineNext provides a global time system.
 
-Access:
-
-````
-
+```
 Engine.Time
-
-````
+```
 
 ---
 
-# Delta Time
+## Delta Time
 
 Every update receives delta time.
 
 ```csharp
 public override void OnUpdate(float dt)
-````
+```
 
 ---
 
-# Time Scaling
-
-Example:
+## Time Scaling
 
 ```csharp
 Engine.Time.Scale = 0.5f;
@@ -698,32 +608,25 @@ Useful for:
 * slow motion
 * pause systems
 
-````
-
 ---
 
-# Spatial-Index.md
-
-```markdown
 # Spatial Index
 
 Scenes include a spatial index for efficient queries.
 
-````
-
+```
 Scene.SpatialIndex
-
-````
+```
 
 This allows fast lookups of nearby actors.
 
 ---
 
-# Example
+## Example
 
 ```csharp
 var nearby = SpatialIndex.Query(radius);
-````
+```
 
 Used for:
 
@@ -731,20 +634,15 @@ Used for:
 * collision
 * gameplay queries
 
-````
-
 ---
 
-# Full-Example-Game.md
-
-```markdown
 # Complete Example
 
 A minimal playable game.
 
 ---
 
-# Player
+## Player
 
 ```csharp
 class Player : Actor
@@ -758,11 +656,11 @@ class Player : Actor
             Position.X += 5 * dt;
     }
 }
-````
+```
 
 ---
 
-# Scene
+## Scene
 
 ```csharp
 class GameScene : Scene
@@ -776,10 +674,13 @@ class GameScene : Scene
 
 ---
 
-# Start
+## Start
 
 ```csharp
 Engine.Start(new GameScene());
 ```
 
 You now have a working game.
+
+```
+```
