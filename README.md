@@ -1,19 +1,18 @@
-````markdown
 # EngineNext
 
 EngineNext is a lightweight, code-first 2D engine for developers who want the shortest path from an idea to a running game.
 
 It is built around a small set of clear primitives:
 
-- **Scenes** define the world
-- **Actors** define behavior
-- **Physics** handles movement and collision
-- **Rendering** is driven by an explicit draw list
-- **Input** is action-based
-- **UI** is code-defined and attribute-driven
-- **Particles** are fast to trigger and easy to shape
-- **Animation** is procedural and skeleton-based
-- **Platform hosts** run the engine on real windows
+* **Scenes** define the world
+* **Actors** define behavior
+* **Physics** handles movement and collision
+* **Rendering** is driven by an explicit draw list
+* **Input** is action-based
+* **UI** is code-defined and attribute-driven
+* **Particles** are fast to trigger and easy to shape
+* **Animation** is procedural and skeleton-based
+* **Platform hosts** run the engine on real windows
 
 The goal is not to bury game logic behind tooling. The goal is to let you write plain C#, stay close to the frame loop, and still have enough structure to build something real.
 
@@ -33,12 +32,12 @@ Instead of requiring a large editor workflow, deep object graphs, or a large amo
 
 That makes it a strong fit for:
 
-- gameplay prototypes
-- custom 2D games
-- jam projects
-- engine experiments
-- deterministic-feeling code-first workflows
-- teams who want source-level control instead of editor-driven abstraction
+* gameplay prototypes
+* custom 2D games
+* jam projects
+* engine experiments
+* deterministic-feeling code-first workflows
+* teams who want source-level control instead of editor-driven abstraction
 
 ---
 
@@ -46,9 +45,9 @@ That makes it a strong fit for:
 
 This solution is organized into three main projects:
 
-- **EngineNext.Core** — scenes, actors, rendering, physics, particles, input, UI, animation, primitives, sound hooks, and core engine state
-- **EngineNext.Platform** — hosting abstractions such as `IGameHost` and `HostOptions`
-- **EngineNext.Platform.Windows** — a native Win32 host with a software-backed renderer
+* **EngineNext.Core** — scenes, actors, rendering, physics, particles, input, UI, animation, primitives, sound hooks, and core engine state
+* **EngineNext.Platform** — hosting abstractions such as `IGameHost` and `HostOptions`
+* **EngineNext.Platform.Windows** — a native Win32 host with a software-backed renderer
 
 ---
 
@@ -62,21 +61,21 @@ EngineNext is easiest to understand if you look at its main pieces one at a time
 
 It exposes:
 
-- `Scene`
-- `UI`
-- `Time`
-- `Actions`
-- `Input`
-- `Sound`
-- `RenderSettings`
+* `Scene`
+* `UI`
+* `Time`
+* `Actions`
+* `Input`
+* `Sound`
+* `RenderSettings`
 
 It also owns the top-level lifecycle:
 
-- `Start(Scene firstScene)`
-- `SetScene(Scene scene)`
-- `Tick(float deltaSeconds)`
-- `Render(RenderList list, SizeI viewport)`
-- `RequestExit()`
+* `Start(Scene firstScene)`
+* `SetScene(Scene scene)`
+* `Tick(float deltaSeconds)`
+* `Render(RenderList list, SizeI viewport)`
+* `RequestExit()`
 
 This makes the engine easy to reason about: there is one current scene, one frame tick, and one render pass.
 
@@ -88,29 +87,29 @@ A `Scene` is the world container.
 
 A scene owns:
 
-- actors
-- physics world
-- particle system
-- spatial index
-- camera position
-- camera smoothing
+* actors
+* physics world
+* particle system
+* spatial index
+* camera position
+* camera smoothing
 
 A scene is where you set up the world, spawn game objects, and control high-level flow.
 
 Lifecycle hooks:
 
-- `OnStart()`
-- `OnUpdate(float dt)`
-- `OnRenderBackground(RenderList list, SizeI viewport)`
-- `OnRender(RenderList list, SizeI viewport)`
-- `OnEnd()`
+* `OnStart()`
+* `OnUpdate(float dt)`
+* `OnRenderBackground(RenderList list, SizeI viewport)`
+* `OnRender(RenderList list, SizeI viewport)`
+* `OnEnd()`
 
 A scene can also:
 
-- `Spawn<TActor>()`
-- `Spawn<TActor>(Prefab<TActor> prefab)`
-- `Add(Actor actor)`
-- `Remove(Actor actor)`
+* `Spawn<TActor>()`
+* `Spawn<TActor>(Prefab<TActor> prefab)`
+* `Add(Actor actor)`
+* `Remove(Actor actor)`
 
 This keeps scene code focused on orchestration rather than low-level plumbing.
 
@@ -122,28 +121,28 @@ An `Actor` is the main gameplay unit.
 
 Every actor comes with:
 
-- a `Transform`
-- a `PhysicsBody2D`
-- a `Name`
-- `Size`
-- `SpritePath`
-- `Tint`
-- `Velocity`
-- layer and sort values
-- enabled state
-- spatial participation flags
+* a `Transform`
+* a `PhysicsBody2D`
+* a `Name`
+* `Size`
+* `SpritePath`
+* `Tint`
+* `Velocity`
+* layer and sort values
+* enabled state
+* spatial participation flags
 
 Actor hooks:
 
-- `Start()`
-- `Update(float dt)`
-- `Render(RenderList list, SizeI viewport)`
+* `Start()`
+* `Update(float dt)`
+* `Render(RenderList list, SizeI viewport)`
 
 Actors also support:
 
-- components through `Add<T>(T component)`
-- animator attachment through `AttachAnimator<T>(T animator)`
-- collision-aware motion through `Move(Vec2 delta)`
+* components through `Add<T>(T component)`
+* animator attachment through `AttachAnimator<T>(T animator)`
+* collision-aware motion through `Move(Vec2 delta)`
 
 This gives each actor a strong default shape without forcing inheritance-heavy design.
 
@@ -155,12 +154,12 @@ Rendering is explicit.
 
 The engine builds a `RenderList`, and the platform host interprets that list to draw:
 
-- filled rectangles
-- stroked rectangles
-- circles
-- text
-- images
-- lines
+* filled rectangles
+* stroked rectangles
+* circles
+* text
+* images
+* lines
 
 Instead of hiding rendering behind a retained UI tree or an opaque graphics abstraction, EngineNext collects draw commands each frame. That makes it straightforward to debug and easy to extend.
 
@@ -174,8 +173,8 @@ The engine render order is:
 
 Actors are spatially queried before rendering, then sorted by:
 
-- `Layer`
-- `SortOrder`
+* `Layer`
+* `SortOrder`
 
 That means only actors in the world viewport are considered for draw.
 
@@ -187,18 +186,18 @@ Physics is intentionally simple and practical.
 
 `PhysicsWorld2D` currently provides:
 
-- gravity application
-- axis-separated movement
-- solid collision resolution
-- grounded and wall contact state updates
+* gravity application
+* axis-separated movement
+* solid collision resolution
+* grounded and wall contact state updates
 
 Each actor has a `PhysicsBody2D` with:
 
-- `Enabled`
-- `IsStatic`
-- `IsSolid`
-- `UseGravity`
-- `GravityScale`
+* `Enabled`
+* `IsStatic`
+* `IsSolid`
+* `UseGravity`
+* `GravityScale`
 
 When an actor moves, collision is resolved against nearby actors from the scene’s spatial index.
 
@@ -214,28 +213,28 @@ Input is split into two levels:
 
 `InputSnapshot` tracks:
 
-- keys currently down
-- keys pressed this frame
-- keys released this frame
-- mouse position
-- mouse wheel delta
+* keys currently down
+* keys pressed this frame
+* keys released this frame
+* mouse position
+* mouse wheel delta
 
 #### Action mapping
 
 `ActionMap` lets you bind named actions to keys:
 
-- `Bind(string action, params InputKey[] keys)`
-- `Pressed(string action)`
-- `Down(string action)`
+* `Bind(string action, params InputKey[] keys)`
+* `Pressed(string action)`
+* `Down(string action)`
 
 That means gameplay code can read actions like `"Jump"` or `"Shoot"` instead of hardcoding physical keys everywhere.
 
 Engine input modes:
 
-- `GameOnly`
-- `UIOnly`
-- `GameAndUI`
-- `UIBlocksGame`
+* `GameOnly`
+* `UIOnly`
+* `GameAndUI`
+* `UIBlocksGame`
 
 This gives you a clean way to switch input behavior between menus and gameplay.
 
@@ -249,21 +248,21 @@ The UI system is code-defined and reflection-driven.
 
 The UI system supports:
 
-- open/close behavior
-- window attributes for layout and style
-- text
-- titles
-- buttons
-- nested UI blocks
-- mouse hit regions
+* open/close behavior
+* window attributes for layout and style
+* text
+* titles
+* buttons
+* nested UI blocks
+* mouse hit regions
 
 The system is especially useful for:
 
-- pause menus
-- title screens
-- overlays
-- debug windows
-- editor-like in-game tools
+* pause menus
+* title screens
+* overlays
+* debug windows
+* editor-like in-game tools
 
 Because UI lives in code, it stays close to gameplay logic.
 
@@ -275,17 +274,17 @@ The particle system is designed for fast, expressive effects without heavy setup
 
 A `ParticlePrefab` can define:
 
-- burst count
-- lifetime range
-- speed range
-- size over lifetime
-- start and end colors
-- direction and spread
-- spawn radius
-- gravity
-- drag
-- shape
-- optional sprite path
+* burst count
+* lifetime range
+* speed range
+* size over lifetime
+* start and end colors
+* direction and spread
+* spawn radius
+* gravity
+* drag
+* shape
+* optional sprite path
 
 A scene owns a `ParticleSystem2D`, and particles can be triggered instantly.
 
@@ -299,18 +298,18 @@ EngineNext includes a procedural skeletal animation system.
 
 An `Animator` can:
 
-- define bones
-- define clips
-- auto-switch clips based on conditions
-- apply animated pose logic over time
-- render a live bone hierarchy
+* define bones
+* define clips
+* auto-switch clips based on conditions
+* apply animated pose logic over time
+* render a live bone hierarchy
 
 This is different from sprite-sheet-driven animation. It is especially useful for:
 
-- stylized stick-figure or bone-driven characters
-- procedural motion
-- dynamic enemies
-- game feel experiments
+* stylized stick-figure or bone-driven characters
+* procedural motion
+* dynamic enemies
+* game feel experiments
 
 Because the animation system is built from code and pose logic, it is very flexible.
 
@@ -320,8 +319,8 @@ Because the animation system is built from code and pose logic, it is very flexi
 
 Scenes use `SpatialIndex2D` internally to accelerate:
 
-- collision lookups
-- render visibility queries
+* collision lookups
+* render visibility queries
 
 That means the engine does not have to brute-force every actor against every other actor every frame.
 
@@ -335,8 +334,8 @@ The sound system is intentionally minimal at the core level.
 
 `SoundSystem` currently exposes:
 
-- `Play(string path)`
-- a `Played` event
+* `Play(string path)`
+* a `Played` event
 
 This keeps the core engine decoupled from platform-specific sound playback while still giving gameplay code a single place to trigger audio.
 
@@ -348,18 +347,18 @@ The platform layer is intentionally separated from the game runtime.
 
 `EngineNext.Platform` defines:
 
-- `IGameHost`
-- `HostOptions`
+* `IGameHost`
+* `HostOptions`
 
 `EngineNext.Platform.Windows` provides `Win32GameHost`, which:
 
-- creates a native window
-- processes Win32 input
-- advances the engine frame loop
-- paints the render list
-- supports resizing
-- draws an FPS overlay
-- translates mouse and keyboard input into `Engine.Input`
+* creates a native window
+* processes Win32 input
+* advances the engine frame loop
+* paints the render list
+* supports resizing
+* draws an FPS overlay
+* translates mouse and keyboard input into `Engine.Input`
 
 This separation keeps the engine core focused and portable.
 
@@ -369,13 +368,13 @@ This separation keeps the engine core focused and portable.
 
 If you only remember one thing about EngineNext, remember this:
 
-- A **scene** owns the world
-- A **scene** spawns **actors**
-- **actors** update every frame
-- **actors** can move through **physics**
-- **actors** render into a **render list**
-- **UI** renders after the world
-- the **host** runs the frame loop
+* A **scene** owns the world
+* A **scene** spawns **actors**
+* **actors** update every frame
+* **actors** can move through **physics**
+* **actors** render into a **render list**
+* **UI** renders after the world
+* the **host** runs the frame loop
 
 That is the whole engine at a useful level of abstraction.
 
@@ -427,7 +426,7 @@ public sealed class Player : Actor
         base.Update(dt);
     }
 }
-````
+```
 
 Start it with a host:
 
@@ -1144,3 +1143,17 @@ host.Run(new HostOptions
     // bindings + Engine.Start(...)
 });
 ```
+
+---
+
+## Final perspective
+
+EngineNext is a focused engine.
+
+It does not try to hide the game loop.
+It does not try to abstract away the world.
+It does not try to replace code with tooling.
+
+Instead, it gives you a compact runtime with enough built-in systems to build real 2D gameplay while keeping everything close to the source.
+
+If you want an engine that feels direct, traceable, and fast to work in, that is exactly what EngineNext is built for.
