@@ -1,0 +1,11 @@
+C:\Users\Bryly\Downloads\EngineNext\EngineNextMegaUpdate\EngineNext.Core\bin\Debug\net10.0\EngineNext.Core.deps.json
+C:\Users\Bryly\Downloads\EngineNext\EngineNextMegaUpdate\EngineNext.Core\bin\Debug\net10.0\EngineNext.Core.dll
+C:\Users\Bryly\Downloads\EngineNext\EngineNextMegaUpdate\EngineNext.Core\bin\Debug\net10.0\EngineNext.Core.pdb
+C:\Users\Bryly\Downloads\EngineNext\EngineNextMegaUpdate\EngineNext.Core\obj\Debug\net10.0\EngineNext.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Bryly\Downloads\EngineNext\EngineNextMegaUpdate\EngineNext.Core\obj\Debug\net10.0\EngineNext.Core.AssemblyInfoInputs.cache
+C:\Users\Bryly\Downloads\EngineNext\EngineNextMegaUpdate\EngineNext.Core\obj\Debug\net10.0\EngineNext.Core.AssemblyInfo.cs
+C:\Users\Bryly\Downloads\EngineNext\EngineNextMegaUpdate\EngineNext.Core\obj\Debug\net10.0\EngineNext.Core.csproj.CoreCompileInputs.cache
+C:\Users\Bryly\Downloads\EngineNext\EngineNextMegaUpdate\EngineNext.Core\obj\Debug\net10.0\EngineNext.Core.dll
+C:\Users\Bryly\Downloads\EngineNext\EngineNextMegaUpdate\EngineNext.Core\obj\Debug\net10.0\refint\EngineNext.Core.dll
+C:\Users\Bryly\Downloads\EngineNext\EngineNextMegaUpdate\EngineNext.Core\obj\Debug\net10.0\EngineNext.Core.pdb
+C:\Users\Bryly\Downloads\EngineNext\EngineNextMegaUpdate\EngineNext.Core\obj\Debug\net10.0\ref\EngineNext.Core.dll
