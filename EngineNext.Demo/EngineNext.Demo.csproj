@@ -1,11 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../EngineNext.Core/EngineNext.Core.csproj" />
+    <ProjectReference Include="../EngineNext.Platform/EngineNext.Platform.csproj" />
+    <ProjectReference Include="../EngineNext.Platform.Windows/EngineNext.Platform.Windows.csproj" />
   </ItemGroup>
 </Project>

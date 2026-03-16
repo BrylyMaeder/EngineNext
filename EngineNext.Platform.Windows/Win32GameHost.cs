@@ -66,6 +66,7 @@ public sealed class Win32GameHost : IGameHost
             ShowWindow(_hwnd, 5);
             UpdateWindow(_hwnd);
 
+            Engine.Configure(options.AuthorityMode, options.FixedDeltaSeconds);
             startup();
 
             var stopwatch = Stopwatch.StartNew();
@@ -88,21 +89,22 @@ public sealed class Win32GameHost : IGameHost
                 }
 
                 var now = stopwatch.Elapsed;
-                var dt = (float)Math.Clamp((now - last).TotalSeconds, 1.0 / 500.0, 1.0 / 20.0);
+                var dt = (now - last).TotalSeconds;
                 last = now;
+                if (dt < 0.0) dt = 0.0;
+                if (dt > 0.1) dt = 0.1;
 
                 _fpsFrames++;
                 _fpsWindow += TimeSpan.FromSeconds(dt);
                 if (_fpsWindow.TotalSeconds >= 1.0)
                 {
-                    _fps = (int)MathF.Round(_fpsFrames / (float)_fpsWindow.TotalSeconds);
+                    _fps = (int)MathF.Round(_fpsFrames / Math.Max(0.0001f, (float)_fpsWindow.TotalSeconds));
                     _fpsFrames = 0;
                     _fpsWindow = TimeSpan.Zero;
                 }
 
-                Engine.Tick(dt);
-                InvalidateRect(_hwnd, IntPtr.Zero, false);
-                Sleep(1);
+                Engine.Update(dt);
+                PresentFrame();
             }
 
             DisposeRenderResources();
@@ -187,29 +189,42 @@ public sealed class Win32GameHost : IGameHost
     private void Paint(IntPtr hWnd)
     {
         var paintStruct = new PAINTSTRUCT();
-        var hdc = BeginPaint(hWnd, ref paintStruct);
+        BeginPaint(hWnd, ref paintStruct);
+        EndPaint(hWnd, ref paintStruct);
+        PresentFrame();
+    }
+
+    private void PresentFrame()
+    {
+        if (_hwnd == IntPtr.Zero)
+            return;
+
+        EnsureBackBuffer();
+        if (_backGraphics is null || _backBuffer is null)
+            return;
+
+        ConfigureGraphics(_backGraphics);
+        Engine.Render(_renderList, _viewport);
+
+        foreach (var cmd in _renderList.Commands)
+            DrawCommand(_backGraphics, cmd);
+
+        if (_showFps && Engine.RenderSettings.ShowFpsCounter)
+            DrawFpsOverlay(_backGraphics);
+
+        var hdc = GetDC(_hwnd);
+        if (hdc == IntPtr.Zero)
+            return;
+
         try
         {
-            EnsureBackBuffer();
-            if (_backGraphics is null || _backBuffer is null)
-                return;
-
-            ConfigureGraphics(_backGraphics);
-            Engine.Render(_renderList, _viewport);
-
-            foreach (var cmd in _renderList.Commands)
-                DrawCommand(_backGraphics, cmd);
-
-            if (_showFps && Engine.RenderSettings.ShowFpsCounter)
-                DrawFpsOverlay(_backGraphics);
-
             using var graphics = Graphics.FromHdc(hdc);
             ConfigureGraphics(graphics);
             graphics.DrawImageUnscaled(_backBuffer, 0, 0);
         }
         finally
         {
-            EndPaint(hWnd, ref paintStruct);
+            ReleaseDC(_hwnd, hdc);
         }
     }
 
@@ -229,11 +244,11 @@ public sealed class Win32GameHost : IGameHost
 
     private static void ConfigureGraphics(Graphics graphics)
     {
-        graphics.SmoothingMode = SmoothingMode.AntiAlias;
+        graphics.SmoothingMode = SmoothingMode.None;
         graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
-        graphics.PixelOffsetMode = PixelOffsetMode.Half;
+        graphics.PixelOffsetMode = PixelOffsetMode.None;
         graphics.CompositingQuality = CompositingQuality.HighSpeed;
-        graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+        graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
     }
 
     private void DrawCommand(Graphics graphics, DrawCommand cmd)
@@ -572,6 +587,8 @@ public sealed class Win32GameHost : IGameHost
     [DllImport("user32.dll")] private static extern bool TranslateMessage(ref MSG msg);
     [DllImport("user32.dll")] private static extern IntPtr DispatchMessage(ref MSG msg);
     [DllImport("user32.dll")] private static extern void PostQuitMessage(int nExitCode);
+    [DllImport("user32.dll")] private static extern IntPtr GetDC(IntPtr hWnd);
+    [DllImport("user32.dll")] private static extern int ReleaseDC(IntPtr hWnd, IntPtr hDc);
     [DllImport("user32.dll")] private static extern IntPtr BeginPaint(IntPtr hWnd, ref PAINTSTRUCT lpPaint);
     [DllImport("user32.dll")] private static extern bool EndPaint(IntPtr hWnd, ref PAINTSTRUCT lpPaint);
     [DllImport("user32.dll")] private static extern bool InvalidateRect(IntPtr hWnd, IntPtr rect, bool erase);
@@ -580,5 +597,4 @@ public sealed class Win32GameHost : IGameHost
     [DllImport("user32.dll")] private static extern bool ReleaseCapture();
     [DllImport("user32.dll", CharSet = CharSet.Unicode)] private static extern int MessageBox(IntPtr hWnd, string text, string caption, uint type);
     [DllImport("kernel32.dll", CharSet = CharSet.Unicode)] private static extern IntPtr GetModuleHandle(string? lpModuleName);
-    [DllImport("kernel32.dll")] private static extern void Sleep(uint milliseconds);
-}
+    }

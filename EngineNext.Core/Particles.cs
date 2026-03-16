@@ -89,6 +89,17 @@ public sealed class ParticleSystem2D
         }
     }
 
+
+    public void Clear()
+    {
+        while (_particles.Count > 0)
+        {
+            var p = _particles[_particles.Count - 1];
+            _particles.RemoveAt(_particles.Count - 1);
+            _pool.Push(p);
+        }
+    }
+
     public void Update(float dt)
     {
         for (var i = _particles.Count - 1; i >= 0; i--)

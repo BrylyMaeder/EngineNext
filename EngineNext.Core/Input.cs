@@ -42,7 +42,11 @@ public sealed class InputSnapshot
     private readonly HashSet<InputKey> _released = new();
 
     public Vec2 MousePosition { get; private set; }
+    public int MouseX => (int)MousePosition.X;
+    public int MouseY => (int)MousePosition.Y;
     public float MouseWheelDelta { get; private set; }
+    public bool LeftMouseDown => Down(InputKey.MouseLeft);
+    public bool RightMouseDown => Down(InputKey.MouseRight);
 
     public bool Down(InputKey key) => _down.Contains(key);
     public bool Pressed(InputKey key) => _pressed.Contains(key);
@@ -67,14 +71,23 @@ public sealed class InputSnapshot
         }
     }
 
+    public void FeedKeyDown(InputKey key) => SetKey(key, true);
+    public void FeedKeyUp(InputKey key) => SetKey(key, false);
     public void SetMousePosition(float x, float y) => MousePosition = new Vec2(x, y);
+    public void FeedMouseMove(int x, int y) => MousePosition = new Vec2(x, y);
     public void AddMouseWheel(float delta) => MouseWheelDelta += delta;
+    public void FeedMouseButtons(bool left, bool right)
+    {
+        SetKey(InputKey.MouseLeft, left);
+        SetKey(InputKey.MouseRight, right);
+    }
 
     public void Reset()
     {
         _down.Clear();
         _pressed.Clear();
         _released.Clear();
+        MousePosition = Vec2.Zero;
         MouseWheelDelta = 0f;
     }
 }
