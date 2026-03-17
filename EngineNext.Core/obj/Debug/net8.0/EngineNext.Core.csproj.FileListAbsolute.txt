@@ -1,0 +1,12 @@
+D:\Github\EngineNext\EngineNext.Core\bin\Debug\net8.0\EngineNext.Core.deps.json
+D:\Github\EngineNext\EngineNext.Core\bin\Debug\net8.0\EngineNext.Core.dll
+D:\Github\EngineNext\EngineNext.Core\bin\Debug\net8.0\EngineNext.Core.pdb
+D:\Github\EngineNext\EngineNext.Core\obj\Debug\net8.0\EngineNext.Core.GeneratedMSBuildEditorConfig.editorconfig
+D:\Github\EngineNext\EngineNext.Core\obj\Debug\net8.0\EngineNext.Core.AssemblyInfoInputs.cache
+D:\Github\EngineNext\EngineNext.Core\obj\Debug\net8.0\EngineNext.Core.AssemblyInfo.cs
+D:\Github\EngineNext\EngineNext.Core\obj\Debug\net8.0\EngineNext.Core.csproj.CoreCompileInputs.cache
+D:\Github\EngineNext\EngineNext.Core\obj\Debug\net8.0\EngineNext.Core.sourcelink.json
+D:\Github\EngineNext\EngineNext.Core\obj\Debug\net8.0\EngineNext.Core.dll
+D:\Github\EngineNext\EngineNext.Core\obj\Debug\net8.0\refint\EngineNext.Core.dll
+D:\Github\EngineNext\EngineNext.Core\obj\Debug\net8.0\EngineNext.Core.pdb
+D:\Github\EngineNext\EngineNext.Core\obj\Debug\net8.0\ref\EngineNext.Core.dll

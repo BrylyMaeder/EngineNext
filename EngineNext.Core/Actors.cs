@@ -117,12 +117,31 @@ public abstract class Actor
     public Transform Transform { get; } = new();
     public PhysicsBody Body { get; } = new();
     public PredictionBuffer Prediction { get; } = new();
-    public string? SpritePath { get; set; }
+    public VisualSpec Visual { get; } = new();
+    public IActorRenderer? Renderer { get; set; } = DefaultActorRenderer.Instance;
+    public bool UseCustomRendering { get; private set; }
+    public string? SpritePath
+    {
+        get => (Visual.Asset as SpriteAsset)?.Path;
+        set => Visual.Asset = string.IsNullOrWhiteSpace(value) ? null : new SpriteAsset(value!);
+    }
     public TextureAsset? Texture { get; set; }
     public MeshAsset? Mesh { get; set; }
-    public EngineColor Tint { get; set; } = new(100, 170, 255, 255);
-    public int Layer { get; set; }
-    public int SortOrder { get; set; }
+    public EngineColor Tint
+    {
+        get => Visual.Tint;
+        set => Visual.Tint = value;
+    }
+    public int Layer
+    {
+        get => Visual.Layer;
+        set => Visual.Layer = value;
+    }
+    public int SortOrder
+    {
+        get => Visual.SortOrder;
+        set => Visual.SortOrder = value;
+    }
     public bool IsSpatiallyStatic { get; set; }
     public bool ParticipatesInSpatialQueries { get; set; } = true;
     public bool IsCreated { get; private set; }
@@ -140,8 +159,16 @@ public abstract class Actor
         set => Transform.Position = value;
     }
 
-    public Vec2 Size { get; set; } = new(32f, 32f);
-    public VisualAnchor VisualAnchor { get; set; } = VisualAnchor.Center;
+    public Vec2 Size
+    {
+        get => Visual.Size;
+        set => Visual.Size = value;
+    }
+    public VisualAnchor VisualAnchor
+    {
+        get => Visual.Anchor;
+        set => Visual.Anchor = value;
+    }
     public RectF Bounds => CreateWorldRect(Transform.Position.ToVec2(), Transform.Scale.ToVec2());
     public RectF VisualBounds => CreateWorldRect(Transform.RenderPosition.ToVec2(), Transform.RenderScale.ToVec2());
     public Animator? Animator => _animator;
@@ -188,6 +215,29 @@ public abstract class Actor
 
     public void SetGroundedState(bool grounded) => IsGrounded = grounded;
     public void SetWallState(bool onWall) => IsOnWall = onWall;
+
+    public void EnableCustomRendering() => UseCustomRendering = true;
+    public void DisableCustomRendering() => UseCustomRendering = false;
+
+    public void RenderDefault(RenderList list, SizeI viewport)
+        => DefaultActorRenderer.Instance.Render(this, list, viewport);
+
+    internal void RenderInternal(RenderList list, SizeI viewport)
+    {
+        if (UseCustomRendering)
+        {
+            Render(list, viewport);
+            return;
+        }
+
+        if (Renderer is not null)
+        {
+            Renderer.Render(this, list, viewport);
+            return;
+        }
+
+        Render(list, viewport);
+    }
 
     public void SetEnabled(bool enabled)
     {
@@ -287,19 +337,6 @@ public abstract class Actor
 
     public virtual void Render(RenderList list, SizeI viewport)
     {
-        if (_animator is not null)
-        {
-            _animator.Render(list, viewport);
-            return;
-        }
-
-        var rect = GetScreenVisualBounds(viewport);
-        if (!string.IsNullOrWhiteSpace(SpritePath))
-            list.DrawImage(SpritePath!, rect, Tint, 6f);
-        else if (Texture is not null)
-            list.DrawImage(Texture.Path, rect, Tint, 6f);
-        else
-            list.FillRect(rect, Tint, 6f);
     }
 
     public virtual void OnCreated() { }

@@ -67,3 +67,86 @@ public sealed class RenderSettings
     public EngineColor FpsTextColor { get; set; } = EngineColor.White;
     public EngineColor FpsShadowColor { get; set; } = new EngineColor(0, 0, 0, 180);
 }
+
+public enum BlendMode
+{
+    Alpha = 0,
+}
+
+public sealed class VisualSpec
+{
+    public RenderAsset? Asset { get; set; }
+    public Vec2 Size { get; set; } = new(32f, 32f);
+    public VisualAnchor Anchor { get; set; } = VisualAnchor.Center;
+    public EngineColor Tint { get; set; } = EngineColor.White;
+    public int Layer { get; set; }
+    public int SortOrder { get; set; }
+    public bool Visible { get; set; } = true;
+    public float Radius { get; set; } = 6f;
+    public BlendMode BlendMode { get; set; } = BlendMode.Alpha;
+}
+
+public interface IActorRenderer
+{
+    void Render(Actor actor, RenderList list, SizeI viewport);
+}
+
+public sealed class DefaultActorRenderer : IActorRenderer
+{
+    public static readonly DefaultActorRenderer Instance = new();
+
+    private DefaultActorRenderer() { }
+
+    public void Render(Actor actor, RenderList list, SizeI viewport)
+    {
+        ArgumentNullException.ThrowIfNull(actor);
+
+        if (!actor.Visual.Visible)
+            return;
+
+        if (actor.Animator is not null)
+        {
+            actor.Animator.Render(list, viewport);
+            return;
+        }
+
+        if (actor.Visual.Asset is null)
+        {
+            list.FillRect(actor.GetScreenVisualBounds(viewport), actor.Visual.Tint, actor.Visual.Radius);
+            return;
+        }
+
+        var rect = actor.GetScreenVisualBounds(viewport);
+        list.DrawImage(actor.Visual.Asset.Path, rect, actor.Visual.Tint, actor.Visual.Radius);
+    }
+}
+
+public sealed class RoundedRectActorRenderer : IActorRenderer
+{
+    public static readonly RoundedRectActorRenderer Instance = new();
+
+    private RoundedRectActorRenderer() { }
+
+    public void Render(Actor actor, RenderList list, SizeI viewport)
+    {
+        if (!actor.Visual.Visible)
+            return;
+
+        list.FillRect(actor.GetScreenVisualBounds(viewport), actor.Visual.Tint, actor.Visual.Radius);
+    }
+}
+
+public sealed class CircleActorRenderer : IActorRenderer
+{
+    public static readonly CircleActorRenderer Instance = new();
+
+    private CircleActorRenderer() { }
+
+    public void Render(Actor actor, RenderList list, SizeI viewport)
+    {
+        if (!actor.Visual.Visible)
+            return;
+
+        list.FillCircle(actor.GetScreenVisualBounds(viewport), actor.Visual.Tint);
+    }
+}

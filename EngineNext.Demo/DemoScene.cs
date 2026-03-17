@@ -60,17 +60,6 @@ public sealed class Player : Actor
 {
     public double Speed = 6.0;
 
-    public override void OnCreated()
-    {
-        Size = new Vec2(32, 32);
-        VisualAnchor = VisualAnchor.Center;
-        Tint = new EngineColor(100, 170, 255, 255);
-    }
-
-    public override void Render(RenderList list, SizeI viewport)
-    {
-        list.FillRect(GetScreenVisualBounds(viewport), Tint, 6f);
-    }
 
     public override void OnFixedTick(int tick, double dt)
     {
@@ -125,6 +114,12 @@ public sealed class PlayerBlueprint : Blueprint<Player>
 
     protected override void Initialize(Scene scene, Player actor)
     {
+        actor.Visual.Size = new Vec2(32, 32);
+        actor.Visual.Anchor = VisualAnchor.Center;
+        actor.Visual.Tint = new EngineColor(100, 170, 255, 255);
+        actor.Visual.Radius = 6f;
+        actor.Renderer = RoundedRectActorRenderer.Instance;
+
         actor.Body.MotionMode = KinematicMotionMode.Slide;
         actor.Body.AddBox(-0.5, -0.5, 1.0, 1.0, false);
         actor.Body.AddBox(-0.7, -0.7, 1.4, 1.4, true);
@@ -133,18 +128,6 @@ public sealed class PlayerBlueprint : Blueprint<Player>
 
 public sealed class Wall : Actor
 {
-    public override void OnCreated()
-    {
-        Tint = new EngineColor(90, 96, 122, 255);
-        VisualAnchor = VisualAnchor.Center;
-        if (Size == Vec2.Zero)
-            Size = new Vec2(32, 32);
-    }
-
-    public override void Render(RenderList list, SizeI viewport)
-    {
-        list.FillRect(GetScreenVisualBounds(viewport), Tint, 4f);
-    }
 }
 
 public sealed class WallBlueprint : Blueprint<Wall>
@@ -165,6 +148,11 @@ public sealed class WallBlueprint : Blueprint<Wall>
 
     protected override void Initialize(Scene scene, Wall actor)
     {
+        actor.Visual.Anchor = VisualAnchor.Center;
+        actor.Visual.Tint = new EngineColor(90, 96, 122, 255);
+        actor.Visual.Radius = 4f;
+        actor.Renderer = RoundedRectActorRenderer.Instance;
+
         actor.Body.IsStatic = true;
         double w = Size.X.ToDouble();
         double h = Size.Y.ToDouble();
@@ -174,16 +162,6 @@ public sealed class WallBlueprint : Blueprint<Wall>
 
 public sealed class Pickup : Actor
 {
-    public override void OnCreated()
-    {
-        Size = new Vec2(22, 22);
-        VisualAnchor = VisualAnchor.Center;
-    }
-
-    public override void Render(RenderList list, SizeI viewport)
-    {
-        list.FillCircle(GetScreenVisualBounds(viewport), Tint);
-    }
 }
 
 public sealed class PickupBlueprint : Blueprint<Pickup>
@@ -206,6 +184,9 @@ public sealed class PickupBlueprint : Blueprint<Pickup>
 
     protected override void Initialize(Scene scene, Pickup actor)
     {
+        actor.Visual.Anchor = VisualAnchor.Center;
+        actor.Visual.Radius = 0f;
+        actor.Renderer = CircleActorRenderer.Instance;
         actor.Body.AddCircle(0, 0, Radius, true);
     }
 }

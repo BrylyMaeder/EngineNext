@@ -290,7 +290,7 @@ public abstract class Scene
         });
 
         for (var i = 0; i < _sortedActors.Count; i++)
-            _sortedActors[i].Render(list, viewport);
+            _sortedActors[i].RenderInternal(list, viewport);
 
         Particles.Render(list, this, viewport);
     }
